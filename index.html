@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Phaser Example</title>
+</head>
+
+<body onload="initGame()">
+
+    <div id="game"></div>
+    <script src="https://dop3jnx8my3ym.cloudfront.net/sg-sdk/sg-sdk.5.6.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
+    <script type="text/javascript" src="./src/app.js"></script>
+    <script type="text/javascript" src="./src/boot.js"></script>
+    <script type="text/javascript" src="./src/preloader.js"></script>
+    <script type="text/javascript" src="./src/menu.js"></script>
+    <script type="text/javascript" src="./src/game.js"></script>
+    <script type="text/javascript">
+        function initGame() {
+            console.log(examplePrefix + "sgSdk.initialize() called");
+            // NOTE Here we tell the SDK what modules our game uses and how to start it
+            /*
+                sgSdk.initialize(modules, commands, callback)
+                ---------------------------------------------
+                modules:
+                --------
+                    one or more of the supported modules ('basic', 'levelGame', 'scoreGame', 'leaderboard', 'virtualGoods')
+                commands:
+                ---------
+                //MANDATORY, a unique identifier for your game (e.g. game name).
+                    id: "my-game-unique-name",
+                //MANDATORY, game version
+                    build: "1.0.0",
+                //MANDATORY, a list of supported game languages
+                    supportedLanguages: ['en', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'tr', 'nl', 'pl'],
+                //MANDATORY, unfreeze game and sounds
+                    unfreezeGame: function () {},
+                //MANDATORY, freeze game and sounds
+                    freezeGame: function () {},
+                ///MANDATORY, start your game here (e.g. go to main menu)
+                    runGame: function () {},
+
+                //module:levelGame, a function that takes level number and display this level
+                    goToLevel: function (level) {},
+
+                //module:scoreGame, return the current game score (Number)
+                    getScore: function () {},
+                //module:scoreGame, a function that goes to the actual game play directly
+                    startOver: function () {},
+
+                //module:virtualGoods optional, if your game has boosters (list of boosters slugs)
+                    boosters: ['booster-1', 'booster-2'],
+                //module:virtualGoods optional, if your game has items (list of items slugs)
+                    items: ['item-1'],
+                //module:virtualGoods, a function that takes a currency count and adds it to the player
+                    addCurrency: function (currencyCount) {},
+                //module:virtualGoods, a function that takes a currency count and deducts it from the player
+                    deductCurrency: function (currencyCount) {},
+                //module:virtualGoods(only when you provide an items array), a function that takes an item slug and adds it to the player
+                    addItem: function (itemSlug) {},
+                //module:virtualGoods(only needed when you provide items array), a function that takes an item slug and deducts it from the player
+                    deductItem: function (itemSlug) {},
+                //module:virtualGoods(only needed when you provide items array), a function that takes an item slug and unlocks it for the player
+                    unlockItem: function (itemSlug) {},
+                //module:virtualGoods(only needed when you provide boosters array), a function that takes a booster slug and adds it to the player
+                    addBooster: function (boosterSlug) {},
+                //module:virtualGoods(only needed when you provide boosters array), a function that takes a booster slug and deducts it from the player
+                    deductBooster: function (boosterSlug) {},
+                //module:virtualGoods(only needed when you provide boosters array), a function that takes a booster slug and unlocks it for the player
+                    unlockBooster: function (boosterSlug) {},
+
+                //optional, if gameAnalyticsKey and gameAnalyticsSecret are provided, sg-sdk will initialize gameAnalytics
+                    gameAnalyticsKey: "ga-key-here",
+                //optional (gameAnalytics)
+                    gameAnalyticsSecret: "ga-secret-here",
+                //optional (gameAnalytics)
+                    gameAnalyticsResourceCurrencies: [],
+                //optional (gameAnalytics)
+                    gameAnalyticsResourceItemTypes: [],
+                //optional (gameAnalytics)
+                    gameAnalyticsCustomDimensions1: [],
+                //optional (gameAnalytics)
+                    gameAnalyticsCustomDimensions2: [],
+                //optional (gameAnalytics)
+                    gameAnalyticsCustomDimensions3: []
+                callback:
+                ---------
+                    An ES6 style callback function that the sdk will execute after finishing the initialization.
+                    Params ( error, settings, sdkHandler ) will be passed to it.
+
+                settings:
+                {
+                    "game": {
+                        "id": 111222333444555,            // game id
+                        "slug": "sandbox-test-game-2"     // game slug
+                    },
+                    "publisher": {
+                        "id": 666444333222111,            // publisher id
+                        "name": "sandbox-test-partner-2"  // publisher name
+                    },
+                    "env": {
+                        "locale": "en",                   // returns the language of the game. A string of two characters
+                        "anotherTab": false
+                    },
+                    "crossPromotion": {
+                        "enabled": false,
+                        "link": null
+                    },
+                    "moreGames": {
+                        "displayButton": false            // A boolean. If true, show the button. If false, hide the button
+                    },
+                    "bannerUrl": {
+                        "logo": null                      // an image that - if available - should be used as the logo in the loading phase
+                    },
+                    "abTesting": {},                      // abTesting is being used to test game variants and different behaviours. e.g. {'slug', 'groupName', ....}
+                    "user": {                             // informations about the player
+                        "userId": 123,
+                        "authToken": "abc",
+                        "name": "John Smith",
+                        "known": true,
+                        "avatar": "https://randomuser.me/api/portraits/men/40.jpg",
+                        "validEmail": false
+                    },
+                    "rewarded": {
+                        "enabled": false                  // A boolean. If true, you show the rewarded ads UI. If false, you have to disable rewarded ads functionality
+                    }
+                }
+            */
+            sgSdk.initialize(['basic', 'scoreGame'], {
+                build: PhaserSGBoiler.version,
+                supportedLanguages: ['en', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'tr', 'nl', 'pl'],
+                id: "phaser-sg-boilerplate",
+                freezeGame: function() {
+                    console.log(examplePrefix + "Game Freeze!");
+                },
+                unfreezeGame: function() {
+                    console.log(examplePrefix + "Game Unfreeze!");
+                },
+                runGame: function() {
+                    console.log(examplePrefix + "Game Start!");
+                    game.state.start('Menu');
+                },
+                getScore: function() {
+                    console.log(examplePrefix + "Getting score: " + PhaserSGBoiler.score);
+                    return PhaserSGBoiler.score;
+                },
+                startOver: function() {
+                    console.log(examplePrefix + "Starting over");
+                    game.state.start('Game');
+                }
+            }, function(err, settings, sdkHandler) {
+                if (err) {
+                    console.log(examplePrefix + 'error on initcallback');
+                    console.log(err);
+                } else {
+                    console.log(examplePrefix + 'init callback triggered');
+                    // NOTE the sdkHandler is used to trigger events
+                    window.sdkHandler = sdkHandler;
+                    // NOTE sgSettings stores informations and methods privided by the SDK
+                    /*
+                    {
+                        "commands": {
+                            "build": "1.0.0",
+                            "supportedLanguages": ["en", "de", "es", "fr", "it", "pt", "ru", "tr", "nl", "pl"],
+                            "id": "phaser-sg-boilerplate"
+                        },
+                        "config": {
+                            "game": {
+                                //game id
+                                "id": 111222333444555,
+                                //game slug
+                                "slug": "sandbox-test-game-2"
+                            },
+                            "publisher": {
+                                //publisher id
+                                "id": 666444333222111,
+                                //publisher name
+                                "name": "sandbox-test-partner-2"
+                            },
+                            "env": {
+                                //returns the lang of the game. A string of two characters
+                                "locale": "en",
+                                "anotherTab": false
+                            },
+                            "crossPromotion": {
+                                "enabled": false,
+                                "link": null
+                            },
+                            "moreGames": {
+                                //A boolean. If true, show the button. If false, hide the button
+                                "displayButton": false
+                            },
+                            "bannerUrl": {
+                                //an image that - if available - should be used as the logo in the loading phase
+                                "logo": null
+                            },
+                            "abTesting": {}, //abTesting is being used to test game variants and different behaviours. e.g. {'slug', 'groupName', ....}
+                            "user": {
+                                "userId": 123,
+                                "authToken": "abc",
+                                "name": "John Smith",
+                                "known": true,
+                                "avatar": "https://randomuser.me/api/portraits/men/40.jpg",
+                                "validEmail": false
+                            },
+                            "rewarded": {
+                                "enabled": false
+                            }
+                        }
+                    }
+                    */
+                    window.sgSettings = settings;
+                    runGame();
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
